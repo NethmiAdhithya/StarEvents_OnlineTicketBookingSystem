@@ -1,0 +1,518 @@
+﻿@using StarEvents.ViewModels
+@model ContactViewModel
+
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<style>
+    /* Hero Section */
+    .contact-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+    }
+
+    /* Contact Section */
+    .contact-section {
+        padding: 5rem 0;
+        background: #f8f9fa;
+    }
+
+    .contact-card {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        border: none;
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+        border: none;
+        height: 30%;
+    }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+    .info-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: white;
+        font-size: 2rem;
+    }
+
+    /* Form Styles */
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 15px 20px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.15);
+        }
+
+    .form-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-submit {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        border: none;
+        border-radius: 12px;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+
+    /* Map Section */
+    .map-section {
+        padding: 4rem 0;
+    }
+
+    .map-placeholder {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        border-radius: 20px;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    /* FAQ Section */
+    .faq-section {
+        padding: 4rem 0;
+        background: white;
+    }
+
+    .faq-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+        overflow: hidden;
+    }
+
+    .faq-header {
+        background: none;
+        border: none;
+        padding: 1.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .faq-body {
+        padding: 0 1.5rem 1.5rem;
+        color: #666;
+    }
+
+    /* Success Alert */
+    .alert-success-custom {
+        background: linear-gradient(45deg, #28a745, #20c997);
+        color: white;
+        border: none;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Contact Methods */
+    .contact-method {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        border-radius: 12px;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+
+        .contact-method:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+    .contact-method-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .contact-hero {
+            padding: 3rem 0;
+        }
+
+        .contact-card {
+            padding: 2rem 1.5rem;
+            margin: 0 -15px;
+            border-radius: 0;
+        }
+
+        .contact-section {
+            padding: 3rem 0;
+        }
+    }
+
+    /* Honeypot (spam protection) */
+    .honeypot {
+        display: none;
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="contact-hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">Get In Touch</h1>
+        <p class="lead mb-4 mx-auto" style="max-width: 600px;">
+            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <span class="badge bg-light text-dark fs-6 p-3">
+                <i class="fas fa-clock me-2"></i>24/7 Support
+            </span>
+            <span class="badge bg-light text-dark fs-6 p-3">
+                <i class="fas fa-reply me-2"></i>Quick Response
+            </span>
+            <span class="badge bg-light text-dark fs-6 p-3">
+                <i class="fas fa-headset me-2"></i>Expert Help
+            </span>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-8">
+                <div class="contact-card">
+                    <!-- Success Message -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success-custom">
+                            <i class="fas fa-check-circle me-2"></i>
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <h2 class="fw-bold mb-4">Send us a Message</h2>
+
+                    <form method="post" id="contactForm">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Honeypot Field (spam protection) -->
+                        <div class="honeypot">
+                            <label for="Honeypot">Don't fill this out:</label>
+                            <input type="text" id="Honeypot" name="Honeypot" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="ContactForm.Name" class="form-label"></label>
+                                    <input asp-for="ContactForm.Name" class="form-control" placeholder="Enter your full name" />
+                                    <span asp-validation-for="ContactForm.Name" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="ContactForm.Email" class="form-label"></label>
+                                    <input asp-for="ContactForm.Email" class="form-control" placeholder="Enter your email address" />
+                                    <span asp-validation-for="ContactForm.Email" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="ContactForm.Phone" class="form-label"></label>
+                                    <input asp-for="ContactForm.Phone" class="form-control" placeholder="Enter your phone number" />
+                                    <span asp-validation-for="ContactForm.Phone" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="ContactForm.Subject" class="form-label"></label>
+                                    <select asp-for="ContactForm.Subject" class="form-control">
+                                        <option value="">Select a subject</option>
+                                        <option value="General Inquiry">General Inquiry</option>
+                                        <option value="Technical Support">Technical Support</option>
+                                        <option value="Event Partnership">Event Partnership</option>
+                                        <option value="Billing Issue">Billing Issue</option>
+                                        <option value="Feedback">Feedback</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span asp-validation-for="ContactForm.Subject" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ContactForm.Message" class="form-label"></label>
+                            <textarea asp-for="ContactForm.Message" class="form-control" rows="6"
+                                      placeholder="Tell us how we can help you..."></textarea>
+                            <span asp-validation-for="ContactForm.Message" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit" id="submitButton">
+                            <i class="fas fa-paper-plane me-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="col-lg-4">
+                <!-- Contact Methods -->
+                <div class="contact-card">
+                    <h3 class="fw-bold mb-4">Contact Information</h3>
+
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Call Us</h6>
+                            <p class="mb-0 text-muted">@Model.ContactInfo.Phone</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Email Us</h6>
+                            <p class="mb-0 text-muted">@Model.ContactInfo.Email</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Visit Us</h6>
+                            <p class="mb-0 text-muted">@Model.ContactInfo.Address</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Business Hours</h6>
+                            <p class="mb-0 text-muted" style="white-space: pre-line;">@Model.ContactInfo.BusinessHours</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Support -->
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Need Immediate Help?</h5>
+                    <p class="text-muted mb-3">
+                        Our support team is ready to assist you with any questions or issues.
+                    </p>
+                    <a href="mailto:@Model.ContactInfo.Email" class="btn btn-primary w-100">
+                        <i class="fas fa-envelope me-2"></i>Email Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Find Us</h2>
+            <p class="lead text-muted">Visit our office or reach out through any channel</p>
+        </div>
+
+        <div class="map-placeholder">
+            <div class="text-center">
+                <i class="fas fa-map-marked-alt display-1 mb-3"></i>
+                <h4 class="mb-2">Interactive Map</h4>
+                <p class="mb-0 opacity-75">@Model.ContactInfo.Address</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Frequently Asked Questions</h2>
+            <p class="lead text-muted">Quick answers to common questions</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <!-- FAQ Item 1 -->
+                    <div class="faq-card">
+                        <div class="faq-header" id="headingOne">
+                            <button class="btn w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                <i class="fas fa-question-circle me-2 text-primary"></i>
+                                How quickly do you respond to messages?
+                            </button>
+                        </div>
+                        <div id="collapseOne" class="collapse show" data-bs-parent="#faqAccordion">
+                            <div class="faq-body">
+                                We typically respond to all messages within 24 hours. For urgent matters,
+                                please call our support line for immediate assistance.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="faq-card">
+                        <div class="faq-header" id="headingTwo">
+                            <button class="btn w-100 text-start collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                <i class="fas fa-question-circle me-2 text-primary"></i>
+                                Do you offer event organizer partnerships?
+                            </button>
+                        </div>
+                        <div id="collapseTwo" class="collapse" data-bs-parent="#faqAccordion">
+                            <div class="faq-body">
+                                Yes! We partner with event organizers of all sizes. Contact us through
+                                the partnership inquiry option in the contact form.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="faq-card">
+                        <div class="faq-header" id="headingThree">
+                            <button class="btn w-100 text-start collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                <i class="fas fa-question-circle me-2 text-primary"></i>
+                                Can I visit your office for in-person support?
+                            </button>
+                        </div>
+                        <div id="collapseThree" class="collapse" data-bs-parent="#faqAccordion">
+                            <div class="faq-body">
+                                Absolutely! Our office is open during business hours. We recommend
+                                scheduling an appointment to ensure we can give you our full attention.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="faq-card">
+                        <div class="faq-header" id="headingFour">
+                            <button class="btn w-100 text-start collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                <i class="fas fa-question-circle me-2 text-primary"></i>
+                                What information should I include in my message?
+                            </button>
+                        </div>
+                        <div id="collapseFour" class="collapse" data-bs-parent="#faqAccordion">
+                            <div class="faq-body">
+                                Please include your name, contact information, and a detailed description
+                                of your inquiry. For technical issues, include any error messages and steps to reproduce.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<!-- Add Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            const submitButton = document.getElementById('submitButton');
+            const honeypot = document.getElementById('Honeypot');
+
+            // Honeypot spam protection
+            contactForm.addEventListener('submit', function(e) {
+                if (honeypot.value) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // Form submission feedback
+            contactForm.addEventListener('submit', function() {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            });
+
+            // Auto-format phone number
+            const phoneInput = document.getElementById('ContactForm_Phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 0) {
+                        value = value.match(/.{1,3}/g).join(' ');
+                    }
+                    e.target.value = value;
+                });
+            }
+        });
+    </script>
+}

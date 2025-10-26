@@ -1,0 +1,462 @@
+﻿@using StarEvents.ViewModels
+@model AboutViewModel
+
+@{
+    ViewData["Title"] = "About StarEvents";
+}
+
+<style>
+    /* Hero Section */
+    .about-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 6rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23ffffff" opacity="0.1"><polygon points="1000,100 1000,0 0,100"/></svg>');
+            background-size: cover;
+        }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        background: #f8f9fa;
+        padding: 4rem 0;
+    }
+
+    .stat-card {
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+
+    /* Story Section */
+    .story-section {
+        padding: 5rem 0;
+    }
+
+    .story-image {
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .story-image-placeholder {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        height: 400px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 4rem;
+    }
+
+    /* Values Section */
+    .values-section {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: white;
+        padding: 5rem 0;
+    }
+
+    .value-card {
+        text-align: center;
+        padding: 2rem 1rem;
+        transition: transform 0.3s ease;
+    }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+        }
+
+    .value-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+    }
+
+    /* Team Section */
+    .team-section {
+        padding: 5rem 0;
+        background: #f8f9fa;
+    }
+
+    .team-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+        border: none;
+    }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+    .team-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 0 auto 1.5rem;
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 3rem;
+        border: 5px solid white;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-social {
+        margin-top: 1rem;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f8f9fa;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 5px;
+        color: #6c757d;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .social-link:hover {
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        padding: 5rem 0;
+        text-align: center;
+    }
+
+    .btn-light-custom {
+        background: white;
+        color: #6a11cb;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-light-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .about-hero {
+            padding: 4rem 0;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+        }
+
+        .team-card {
+            margin-bottom: 2rem;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="display-3 fw-bold mb-4">Our Story</h1>
+            <p class="lead mb-4 mx-auto" style="max-width: 600px;">
+                Transforming the way people discover, book, and experience events.
+                We're passionate about creating unforgettable moments.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <span class="badge bg-light text-dark fs-6 p-3">
+                    <i class="fas fa-rocket me-2"></i>Founded in 2024
+                </span>
+                <span class="badge bg-light text-dark fs-6 p-3">
+                    <i class="fas fa-users me-2"></i>45K+ Customers
+                </span>
+                <span class="badge bg-light text-dark fs-6 p-3">
+                    <i class="fas fa-star me-2"></i>4.8/5 Rating
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-3 col-md-6 col-6">
+                <div class="stat-card">
+                    <div class="stat-number">@Model.Stats.EventsHosted.ToString("N0")+</div>
+                    <div class="stat-label">Events Hosted</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-6">
+                <div class="stat-card">
+                    <div class="stat-number">@Model.Stats.HappyCustomers.ToString("N0")+</div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-6">
+                <div class="stat-card">
+                    <div class="stat-number">@Model.Stats.TicketsSold.ToString("N0")+</div>
+                    <div class="stat-label">Tickets Sold</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-6">
+                <div class="stat-card">
+                    <div class="stat-number">@Model.Stats.CitiesCovered</div>
+                    <div class="stat-label">Cities Covered</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Story Section -->
+<section class="story-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="story-image-placeholder">
+                    <i class="fas fa-history"></i>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h2 class="display-5 fw-bold mb-4">From Vision to Reality</h2>
+                <p class="lead mb-4">
+                    StarEvents was born from a simple idea: making event discovery and ticketing
+                    accessible, secure, and enjoyable for everyone.
+                </p>
+                <p class="mb-4">
+                    What started as a small startup in 2024 has grown into Sri Lanka's premier
+                    event ticketing platform. We've connected thousands of event organizers
+                    with passionate audiences, creating memorable experiences across the country.
+                </p>
+                <p class="mb-4">
+                    Our journey has been fueled by innovation, customer satisfaction, and
+                    a relentless pursuit of excellence in the event management industry.
+                </p>
+                <div class="d-flex gap-3">
+                    <div class="text-center">
+                        <div class="fw-bold text-primary fs-3">2024</div>
+                        <div class="text-muted">Founded</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="fw-bold text-primary fs-3">1K+</div>
+                        <div class="text-muted">Events</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="fw-bold text-primary fs-3">25+</div>
+                        <div class="text-muted">Cities</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="values-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Our Values</h2>
+            <p class="lead opacity-75">The principles that guide everything we do</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Customer First</h4>
+                    <p class="opacity-75">
+                        Our customers are at the heart of every decision we make.
+                        We're committed to delivering exceptional experiences.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Innovation</h4>
+                    <p class="opacity-75">
+                        We constantly push boundaries to bring you the latest
+                        technology and features in event management.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Trust & Security</h4>
+                    <p class="opacity-75">
+                        Your security is our priority. We employ bank-level
+                        encryption and security measures to protect your data.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Partnership</h4>
+                    <p class="opacity-75">
+                        We build strong relationships with event organizers
+                        to bring you the best events and experiences.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Accessibility</h4>
+                    <p class="opacity-75">
+                        Events should be accessible to everyone. We work to
+                        remove barriers and create inclusive experiences.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Passion</h4>
+                    <p class="opacity-75">
+                        We're passionate about events and the magic they bring
+                        to people's lives. This drives us every single day.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Meet Our Team</h2>
+            <p class="lead text-muted">The passionate people behind StarEvents</p>
+        </div>
+        <div class="row">
+            @foreach (var member in Model.TeamMembers)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="team-card">
+
+                        @if (!string.IsNullOrEmpty(member.ImageUrl))
+                        {
+                            <img src="@member.ImageUrl"
+                                 alt="@member.Name Profile"
+                                 class="team-image"
+                                 style="object-fit: cover; border: 5px solid white;" />
+                        }
+                        else
+                        {
+                            <div class="team-image">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        }
+
+                        <h5 class="fw-bold mb-1">@member.Name</h5>
+                        <p class="text-primary mb-3">@member.Position</p>
+                        <p class="text-muted small mb-3">@member.Description</p>
+                        <div class="team-social">
+                            @foreach (var social in member.SocialLinks)
+                            {
+                                <a href="@social.Value" class="social-link" target="_blank">
+                                    <i class="fab fa-@social.Key"></i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="display-5 fw-bold mb-4">Ready to Create Amazing Events?</h2>
+        <p class="lead mb-4 opacity-75 mx-auto" style="max-width: 600px;">
+            Join thousands of event organizers who trust StarEvents to manage
+            their events and connect with their audience.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="/Events" class="btn btn-light-custom">
+                <i class="fas fa-calendar-alt me-2"></i>Browse Events
+            </a>
+            <a href="/Account/Register" class="btn btn-outline-light">
+                <i class="fas fa-user-plus me-2"></i>Join Now
+            </a>
+        </div>
+    </div>
+</section>
+<!-- Add Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">

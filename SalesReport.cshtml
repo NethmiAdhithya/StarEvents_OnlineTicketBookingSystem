@@ -1,0 +1,39 @@
+﻿@model IEnumerable<StarEvents.ViewModels.SalesReportViewModel>
+
+@{
+    ViewData["Title"] = "Sales Report";
+    decimal totalOverallRevenue = Model.Sum(m => m.TotalRevenue);
+    int totalOverallTickets = Model.Sum(m => m.TotalTickets);
+}
+
+<div class="container mt-5">
+    <h2 class="dashboard-header"><i class="fas fa-dollar-sign me-2 text-success"></i>Monthly Sales Report</h2>
+    <hr />
+
+    <div class="alert alert-info">
+        <strong>Overall Summary:</strong>
+        Total Revenue: **LKR @totalOverallRevenue.ToString("N2")** | Total Tickets Sold: **@totalOverallTickets**
+    </div>
+
+    <table class="table table-striped table-hover mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.MonthName)</th>
+                <th>@Html.DisplayNameFor(model => model.TotalRevenue)</th>
+                <th>@Html.DisplayNameFor(model => model.TotalTickets)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MonthName</td>
+                    <td class="text-end">LKR @item.TotalRevenue.ToString("N2")</td>
+                    <td>@item.TotalTickets</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-action="Reports" class="btn btn-secondary mt-3"><i class="fas fa-arrow-left me-1"></i>Back to Reports Menu</a>
+</div>

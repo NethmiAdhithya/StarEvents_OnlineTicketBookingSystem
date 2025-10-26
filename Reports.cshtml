@@ -1,0 +1,47 @@
+﻿@* StarEvents/Views/Admin/Reports.cshtml *@
+
+@{
+    ViewData["Title"] = "Reports Dashboard";
+}
+
+<div class="container mt-5">
+    <h2 class="dashboard-header"><i class="fas fa-chart-pie me-2 text-primary"></i>Reports Dashboard</h2>
+    <hr />
+
+    <p class="lead text-muted">Select a report to view detailed analytics.</p>
+
+    <div class="row mt-4">
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm metric-card" style="background: linear-gradient(45deg, #28a745, #1e7e34);">
+                <div class="card-body">
+                    <h5 class="metric-card-title"><i class="fas fa-dollar-sign me-2"></i>Sales Report</h5>
+                    <p class="card-text text-white-50">Monthly and total revenue figures for all bookings.</p>
+                    <a asp-controller="Admin" asp-action="SalesReport" class="btn btn-sm btn-light btn-block mt-3">View Sales Report</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm metric-card" style="background: linear-gradient(45deg, #007bff, #0056b3);">
+                <div class="card-body">
+                    <h5 class="metric-card-title"><i class="fas fa-users me-2"></i>Users Report</h5>
+                    <p class="card-text text-white-50">Registration trends, roles, and user activity summaries.</p>
+                    <a asp-controller="Admin" asp-action="UsersReport" class="btn btn-sm btn-light btn-block mt-3">View Users Report</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm metric-card" style="background: linear-gradient(45deg, #ffc107, #ff9800); color: black !important;">
+                <div class="card-body">
+                    <h5 class="metric-card-title" style="color: black !important;"><i class="fas fa-calendar-check me-2"></i>Events Report</h5>
+                    <p class="card-text text-dark-50">Performance, attendance, and ticket status for all events.</p>
+                    <a asp-controller="Admin" asp-action="EventsReport" class="btn btn-sm btn-dark btn-block mt-3">View Events Report</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-secondary mt-4"><i class="fas fa-arrow-left me-1"></i>Back to Dashboard</a>
+</div>

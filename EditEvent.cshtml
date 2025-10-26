@@ -1,0 +1,136 @@
+﻿@using StarEvents.ViewModels
+@model EditEventViewModel
+
+@{
+	ViewData["Title"] = "Edit Event: " + Model.Title;
+}
+
+<div class="container py-4">
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h2 class="text-primary fw-bold mb-0">
+			<i class="fas fa-edit me-2"></i> Edit Event: @Model.Title
+		</h2>
+		<a asp-action="ManageEvents" class="btn btn-outline-secondary">
+			<i class="fas fa-arrow-left me-1"></i> Back to Event Management
+		</a>
+	</div>
+
+	<div class="card shadow-lg border-0">
+		<div class="card-body p-4">
+			@* IMPORTANT: Changed method="post" to include enctype for file upload *@
+			<form asp-action="EditEvent" method="post" enctype="multipart/form-data">
+				<div asp-validation-summary="All" class="text-danger mb-3"></div> @* Shows all errors for debugging *@
+
+				@* Add the Anti-Forgery Token explicitly *@
+				@Html.AntiForgeryToken()
+
+				@* Hidden field to pass the ID back to the POST action *@
+				<input type="hidden" asp-for="EventId" />
+
+				<div class="row">
+					<div class="col-md-8">
+						<div class="mb-3">
+							<label asp-for="Title" class="form-label"></label>
+							<input asp-for="Title" class="form-control" />
+							<span asp-validation-for="Title" class="text-danger"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="Description" class="form-label"></label>
+							<textarea asp-for="Description" class="form-control" rows="4"></textarea>
+							<span asp-validation-for="Description" class="text-danger"></span>
+						</div>
+					</div>
+
+					@* --- MOVED Category/Venue section to its own row for better layout control --- *@
+					<div class="col-md-4">
+						@* --- NEW: Image Preview and Upload Section --- *@
+						<div class="mb-3 text-center">
+							<label class="form-label d-block fw-bold text-dark">Current Event Image</label>
+							<div class="border p-2 rounded mb-3 bg-light">
+								@if (!string.IsNullOrEmpty(Model.ExistingImagePath))
+								{
+									<img src="@Model.ExistingImagePath" alt="Current Event Image" class="img-fluid rounded" style="max-height: 150px; object-fit: cover;" />
+									@* Hidden field to pass the existing path back on validation failure *@
+									<input type="hidden" asp-for="ExistingImagePath" />
+								}
+								else
+								{
+									<div class="text-muted py-4">
+										<i class="fas fa-image fa-2x d-block mb-2"></i>
+										No image currently set.
+									</div>
+								}
+							</div>
+
+							<label asp-for="NewImageFile" class="form-label"></label>
+							<input asp-for="NewImageFile" type="file" class="form-control" accept="image/*" />
+							<span asp-validation-for="NewImageFile" class="text-danger"></span>
+						</div>
+						@* --- END Image Section --- *@
+					</div>
+				</div>
+
+				<hr class="my-4" />
+
+				<div class="row">
+					<div class="col-md-3 mb-3">
+						<label asp-for="EventDate" class="form-label"></label>
+						<input asp-for="EventDate" class="form-control" type="date" />
+						<span asp-validation-for="EventDate" class="text-danger"></span>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label asp-for="EventTime" class="form-label"></label>
+						<input asp-for="EventTime"
+							   class="form-control"
+							   type="time"
+							   value="@Model.EventTime.ToString(@"hh\:mm")" />
+						<span asp-validation-for="EventTime" class="text-danger"></span>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label asp-for="TicketPrice" class="form-label"></label>
+						<input asp-for="TicketPrice" class="form-control" />
+						<span asp-validation-for="TicketPrice" class="text-danger"></span>
+					</div>
+					<div class="col-md-3 mb-3">
+						<label asp-for="TotalTickets" class="form-label"></label>
+						<input asp-for="TotalTickets" class="form-control" />
+						<span asp-validation-for="TotalTickets" class="text-danger"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						<label asp-for="CategoryId" class="form-label"></label>
+						<select asp-for="CategoryId" class="form-select"
+								asp-items="@(new SelectList(Model.Categories, "CategoryId", "CategoryName", Model.CategoryId))">
+							<option value="">-- Select Category --</option>
+						</select>
+						<span asp-validation-for="CategoryId" class="text-danger"></span>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label asp-for="VenueId" class="form-label"></label>
+						<select asp-for="VenueId" class="form-select"
+								asp-items="@(new SelectList(Model.Venues, "VenueId", "VenueName", Model.VenueId))">
+							<option value="">-- Select Venue --</option>
+						</select>
+						<span asp-validation-for="VenueId" class="text-danger"></span>
+					</div>
+				</div>
+
+				<hr />
+
+				<div class="d-flex justify-content-end">
+					<button type="submit" class="btn btn-primary btn-lg shadow-sm">
+						<i class="fas fa-save me-2"></i> Save Changes
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

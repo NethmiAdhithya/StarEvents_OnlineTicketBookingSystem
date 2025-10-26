@@ -1,0 +1,182 @@
+﻿@* StarEvents.Views/Admin/ManageEvents.cshtml (Professional & Colorful) *@
+@using StarEvents.ViewModels
+@model ManageEventsViewModel
+
+@{
+    ViewData["Title"] = "Manage Events";
+
+    // Helper function to assign a status badge color
+    string GetStatusBadgeClass(string status) => status switch
+    {
+        "Approved" => "bg-success",
+        "Pending" => "bg-warning text-dark",
+        "Rejected" => "bg-danger",
+        "Draft" => "bg-secondary",
+        _ => "bg-info",
+    };
+
+    // Helper function for button style
+    string GetActionButtonClass(string action) => action switch
+    {
+        "Approve" => "btn-success",
+        "Reject" => "btn-danger",
+        "Edit" => "btn-warning",
+        "Details" => "btn-info",
+        _ => "btn-secondary"
+    };
+}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold mb-0">
+            <i class="fas fa-calendar-check me-2"></i> Event Management
+        </h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Admin")" class="text-secondary">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Events</li>
+            </ol>
+        </nav>
+    </div>
+
+    <p class="text-muted mb-5">
+        Review, approve, reject, or modify events submitted by event organizers. Use filters to prioritize pending requests.
+    </p>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-lg-8">
+            <form asp-action="ManageEvents" method="get" class="d-flex">
+                <input type="text"
+                       name="searchTerm"
+                       class="form-control me-2 shadow-sm"
+                       placeholder="Search by Title or Organizer..."
+                       value="@Model.SearchTerm" />
+
+                <select name="filterStatus" class="form-select me-2 shadow-sm" style="width: 180px;">
+                    <option value="All" selected="@(Model.FilterStatus == "All")">Filter by Status (All)</option>
+                    <option value="Pending" selected="@(Model.FilterStatus == "Pending")">Pending</option>
+                    <option value="Approved" selected="@(Model.FilterStatus == "Approved")">Approved</option>
+                    <option value="Rejected" selected="@(Model.FilterStatus == "Rejected")">Rejected</option>
+                    <option value="Draft" selected="@(Model.FilterStatus == "Draft")">Draft</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary shadow-sm"><i class="fas fa-filter"></i> Apply</button>
+                @if (!string.IsNullOrEmpty(Model.SearchTerm) || Model.FilterStatus != "All")
+                {
+                    <a asp-action="ManageEvents" class="btn btn-outline-secondary ms-2 shadow-sm"><i class="fas fa-times"></i> Clear</a>
+                }
+            </form>
+        </div>
+        <div class="col-lg-4 text-end">
+            <h5 class="mb-0 text-dark fw-bold">
+                <i class="fas fa-list me-1 text-primary"></i>Total Events
+                <span class="badge bg-info ms-1">@Model.Events.Count</span>
+            </h5>
+        </div>
+    </div>
+
+    @if (!Model.Events.Any())
+    {
+        <div class="alert alert-info text-center py-5 shadow-sm">
+            <i class="fas fa-info-circle fa-2x mb-3"></i>
+            <h4 class="alert-heading">No Events Found!</h4>
+            <p class="mb-0">There are no events matching the current filter criteria.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model.Events)
+            {
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-lg border-0 h-100 @(item.Status == "Pending" ? "border-warning border-3" : "")">
+
+                        @* --- NEW: Image Display Block --- *@
+                        <div class="position-relative">
+                            @if (!string.IsNullOrEmpty(item.ImagePath))
+                            {
+                                <img src="@item.ImagePath" class="card-img-top" alt="@item.Title" style="height: 180px; object-fit: cover; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem;" />
+                            }
+                            else
+                            {
+                                @* Placeholder if no image is uploaded *@
+                                <div class="bg-light d-flex align-items-center justify-content-center text-secondary" style="height: 180px; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem;">
+                                    <i class="fas fa-image fa-3x"></i>
+                                </div>
+                            }
+
+                            @* Overlay the status badge on the image/placeholder *@
+                            <span class="badge @GetStatusBadgeClass(item.Status) text-white shadow-sm position-absolute top-0 end-0 m-3"
+                                  style="font-size: 0.9rem; padding: 0.5em 1em; z-index: 10;">
+                                @item.Status
+                            </span>
+                        </div>
+
+                        @* --- NEW: Header for Title (Moved from original card-header) --- *@
+                        <div class="card-header bg-white py-3">
+                            <h5 class="mb-0 text-dark fw-bold">@item.Title</h5>
+                        </div>
+                        @* ------------------------------------ *@
+
+
+                        <div class="card-body">
+                            <div class="row g-2 mb-3 small text-muted">
+                                <div class="col-md-6"><i class="fas fa-user me-2"></i>Organizer: <strong>@item.OrganizerName</strong></div>
+                                <div class="col-md-6"><i class="fas fa-map-marker-alt me-2"></i>Location: <strong>@item.Location</strong></div>
+                                <div class="col-md-6"><i class="fas fa-calendar-alt me-2"></i>Date: <strong>@item.Date.ToShortDateString()</strong></div>
+                                <div class="col-md-6"><i class="fas fa-clock me-2"></i>Time: <strong>@item.Time.ToString("hh\\:mm") @(item.Time.Hours < 12 ? "AM" : "PM")</strong></div>
+
+                                @* --- NEW: Ticket Information --- *@
+                                <div class="col-md-4"><i class="fas fa-ticket-alt me-2"></i>Total: <strong>@item.TotalTickets.ToString("N0")</strong></div>
+                                <div class="col-md-4"><i class="fas fa-check-circle me-2"></i>Sold: <strong>@item.TicketsSold.ToString("N0")</strong></div>
+                                <div class="col-md-4"><i class="fas fa-money-bill-wave me-2"></i>Price: <strong>LKR @item.TicketPrice.ToString("N0")</strong></div>
+                                @* ------------------------------- *@
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-light d-flex justify-content-end">
+
+                            @* Edit/Details button remains an anchor for a GET request *@
+                            <a asp-action="EditEvent" asp-route-id="@item.Id" class="btn btn-sm @GetActionButtonClass("Edit") text-white me-2 shadow-sm">
+                                <i class="fas fa-edit me-1"></i> Edit
+                            </a>
+
+                            @if (item.Status == "Pending")
+                            {
+                                @* Use a FORM for APPROVE (POST request) *@
+                                <form asp-action="ApproveEvent" asp-route-id="@item.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm @GetActionButtonClass("Approve") me-2 shadow-sm"
+                                            onclick="return confirm('Are you sure you want to APPROVE this event? This action is public.')">
+                                        <i class="fas fa-check me-1"></i> Approve
+                                    </button>
+                                    @Html.AntiForgeryToken()
+                                </form>
+
+                                @* Use a FORM for REJECT (POST request) *@
+                                <form asp-action="RejectEvent" asp-route-id="@item.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm @GetActionButtonClass("Reject") shadow-sm"
+                                            onclick="return confirm('Are you sure you want to REJECT this event?')">
+                                        <i class="fas fa-times me-1"></i> Reject
+                                    </button>
+                                    @Html.AntiForgeryToken()
+                                </form>
+                            }
+                            else if (item.Status == "Approved")
+                            {
+                                @* Use a FORM for REJECT/WITHDRAW (POST request) *@
+                                <form asp-action="RejectEvent" asp-route-id="@item.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm @GetActionButtonClass("Reject") shadow-sm"
+                                            onclick="return confirm('Are you sure you want to WITHDRAW (Reject) this approved event? It will be removed from the public page.')">
+                                        <i class="fas fa-times me-1"></i> Withdraw/Reject
+                                    </button>
+                                    @Html.AntiForgeryToken()
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

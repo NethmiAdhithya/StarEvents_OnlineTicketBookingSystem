@@ -1,0 +1,230 @@
+﻿@model StarEvents.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<style>
+    /* --- Custom Dashboard Styles (Matching Organizer Dashboard Style) --- */
+
+    /* Dashboard Header */
+    .dashboard-header {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: #343a40; /* Darker text for professionalism */
+    }
+
+    /* Key Metrics Cards */
+    .metric-card {
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding: 1.5rem;
+        color: white; /* Default text color is white */
+        min-height: 140px;
+    }
+
+        .metric-card:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+    .metric-card-title {
+        font-size: 1rem;
+        font-weight: 500;
+        opacity: 0.8;
+        margin-bottom: 0.5rem;
+    }
+
+    .metric-card-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    /* Gradient/Color Definitions for Cards */
+    /* Total Users (Blue/Primary - slightly darker/more authoritative) */
+    .bg-total-users {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+    }
+    /* Total Events (Green/Success) */
+    .bg-total-events {
+        background: linear-gradient(45deg, #28a745, #1e7a40);
+    }
+    /* Total Revenue (Cyan/Info) */
+    .bg-total-revenue {
+        background: linear-gradient(45deg, #17a2b8, #00c7e2);
+    }
+    /* Active Events (Yellow/Warning) */
+    .bg-active-events {
+        background: linear-gradient(45deg, #ffc107, #ff9800);
+    }
+
+    /* Quick Actions Section */
+    .quick-actions-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e9ecef;
+    }
+
+    .quick-actions-header {
+        font-size: 1.25rem;
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        background-color: #f8f9fa; /* Light gray header */
+        border-bottom: 1px solid #e9ecef;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .quick-actions-body {
+        padding: 1.5rem;
+    }
+
+    /* Quick Action Buttons (Gradient style) */
+    .btn-quick-action {
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        margin-right: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-manage-users {
+        background: linear-gradient(45deg, #6a11cb, #2575fc); /* Primary Gradient */
+        color: white;
+        border: none;
+    }
+
+        .btn-manage-users:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(106, 17, 203, 0.4);
+            color: white;
+        }
+
+    .btn-manage-events {
+        background-color: #6c757d; /* Standard Secondary */
+        color: white;
+        border: none;
+    }
+
+        .btn-manage-events:hover {
+            background-color: #5a6268;
+            color: white;
+        }
+
+    .btn-view-reports {
+        background-color: #28a745; /* Standard Success */
+        color: white;
+        border: none;
+    }
+
+        .btn-view-reports:hover {
+            background-color: #1e7e34;
+            color: white;
+        }
+
+    .btn-system-settings {
+        background-color: #17a2b8; /* Standard Info */
+        color: white;
+        border: none;
+    }
+
+        .btn-system-settings:hover {
+            background-color: #138496;
+            color: white;
+        }
+
+    /* General Layout Padding */
+    .container-fluid {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <h2 class="dashboard-header"><i class="fas fa-chart-line me-2 text-primary"></i>Admin Dashboard</h2>
+
+    <div class="row mb-5">
+        <div class="col-md-3">
+            <div class="metric-card bg-total-users">
+                <div class="card-body">
+                    <h5 class="metric-card-title"><i class="fas fa-users me-2"></i>Total Users</h5>
+                    <div class="metric-card-value">@Model.TotalUsers</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="metric-card bg-total-events">
+                <div class="card-body">
+                    <h5 class="metric-card-title"><i class="fas fa-calendar-alt me-2"></i>Total Events</h5>
+                    <div class="metric-card-value">@Model.TotalEvents</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="metric-card bg-total-revenue">
+                <div class="card-body">
+                    <h5 class="metric-card-title"><i class="fas fa-dollar-sign me-2"></i>Total Revenue</h5>
+                    <div class="metric-card-value">LKR @Model.TotalRevenue.ToString("N0")</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="metric-card bg-active-events">
+                <div class="card-body">
+                    <h5 class="metric-card-title"><i class="fas fa-bolt me-2"></i>Active Events</h5>
+                    <div class="metric-card-value">@Model.ActiveEvents</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card quick-actions-card">
+                <div class="quick-actions-header">
+                    <i class="fas fa-cogs me-2 text-primary"></i>Quick Actions
+                </div>
+                <div class="quick-actions-body">
+                    <a asp-controller="Admin" asp-action="MyProfile" class="btn btn-quick-action btn-system-settings" style="background: linear-gradient(45deg, #f05a28, #e94e77); margin-right: 1rem;">
+                        <i class="fas fa-user-circle me-1"></i>My Profile
+                    </a>
+                    <a asp-controller="Admin" asp-action="ManageUsers" class="btn btn-quick-action btn-manage-users">
+                        <i class="fas fa-user-shield me-1"></i>Manage Users
+                    </a>
+
+                    <a asp-controller="Admin" asp-action="ManageEvents" class="btn btn-quick-action btn-manage-events">
+                        <i class="fas fa-calendar-check me-1"></i>Manage Events
+                    </a>
+                    <a asp-controller="Admin" asp-action="Reports" class="btn btn-quick-action btn-view-reports">
+                        <i class="fas fa-chart-pie me-1"></i>View Reports
+                    </a>
+                    <a href="#" class="btn btn-quick-action btn-system-settings">
+                        <i class="fas fa-sliders-h me-1"></i>System Settings
+                    </a></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <div class="card quick-actions-card h-100">
+                <div class="quick-actions-header">System Health and Activity</div>
+                <div class="card-body">
+                    <p class="text-muted">Detailed system metrics (e.g., server load, recent login attempts, database status) would go here...</p>
+                    <img src="https://via.placeholder.com/1000x300?text=System+Overview+Chart+Placeholder" alt="System Health Chart" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    }
